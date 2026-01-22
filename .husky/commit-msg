@@ -1,0 +1,18 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Try to use commitlint if available, otherwise use basic validation
+if command -v npx >/dev/null 2>&1 && npx commitlint --version >/dev/null 2>&1; then
+  npx commitlint --edit "$1"
+else
+  # Basic commit message validation
+  commit_regex='^(feat|fix|docs|style|refactor|test|chore|perf|ci|build|revert)(\(.+\))?: .{1,50}'
+  
+  if ! grep -qE "$commit_regex" "$1"; then
+    echo "❌ Invalid commit message format!"
+    echo "📝 Format: type(scope): description"
+    echo "🏷️  Types: feat, fix, docs, style, refactor, test, chore, perf, ci, build, revert"
+    echo "✅ Example: feat(auth): add user authentication"
+    exit 1
+  fi
+fi
