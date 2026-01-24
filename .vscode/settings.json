@@ -3,7 +3,7 @@
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "quickfix.biome": "explicit",
-    "source.organizeImports.biome": "explicit",
+    "source.organizeImports.biome": "explicit"
   },
   "[typescript]": {
     "editor.defaultFormatter": "biomejs.biome"
@@ -14,8 +14,18 @@
   "[json]": {
     "editor.defaultFormatter": "biomejs.biome"
   },
+  "[jsonc]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
   "typescript.preferences.importModuleSpecifier": "relative",
-  "typescript.suggest.autoImports": true
-}
+  "typescript.suggest.autoImports": true,
+  "biome.enabled": true,
+  "files.associations": {
+    "*.json": "json",
+    "*.jsonc": "jsonc"
+  }
 
- 
+
+
+  
+}
