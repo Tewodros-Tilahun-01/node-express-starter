@@ -1,26 +1,46 @@
-# Husky Git Hooks
+# Husky Git Hooks with Biome
 
-This project uses Husky to run automated checks before commits and pushes.
+This project uses Husky v9+ with Biome for fast, efficient code quality checks.
 
-## Pre-commit Hook
+## 🔧 Git Hooks Configuration
 
-- Runs `lint-staged` to format and lint only staged files
+### Pre-commit Hook
+- Runs `lint-staged` with Biome for ultra-fast linting and formatting
 - Runs TypeScript type checking
-- Ensures code quality before commits
+- Only processes staged files for optimal performance
 
-## Commit Message Hook
+### Pre-push Hook
+- Runs `biome ci` for comprehensive CI-like checks
+- Runs full TypeScript type checking
+- Ensures code quality before pushing to remote
 
-- Validates commit message format using conventional commits
+### Commit Message Hook
+- Validates conventional commit message format
 - Required format: `type(scope): description`
-- Supported types: feat, fix, docs, style, refactor, test, chore, perf, ci, build, revert
+- Comprehensive validation with helpful error messages
 
-## Examples of valid commit messages:
 
+
+## 🎯 Commit Message Format
+
+### Valid Types
+- `feat` - new feature
+- `fix` - bug fix  
+- `docs` - documentation
+- `style` - formatting, missing semi colons, etc
+- `refactor` - code change that neither fixes a bug nor adds a feature
+- `test` - adding missing tests
+- `chore` - maintain
+- `perf` - performance improvement
+- `ci` - CI/CD changes
+- `build` - build system changes
+- `revert` - revert previous commit
+
+### Examples
 - `feat: add user authentication`
 - `fix(api): resolve login endpoint error`
 - `docs: update README with setup instructions`
 - `refactor(utils): simplify helper functions`
 
-## Setup
-
-Run `npm run prepare` to install git hooks after cloning the repository.
+## 🚀 Setup
+Hooks are automatically installed when running `npm install` via the `prepare` script.
