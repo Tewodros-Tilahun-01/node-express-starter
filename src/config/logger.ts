@@ -1,0 +1,44 @@
+import { join } from 'node:path';
+import winston from 'winston';
+import config from './index';
+
+// Create logs directory path
+const logDir = join(process.cwd(), 'logs');
+
+export const logger = winston.createLogger({
+  level: config.logLevel,
+  format: winston.format.combine(
+    winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
+    winston.format.errors({ stack: true }),
+    winston.format.json(),
+    winston.format.prettyPrint() // for development only
+  ),
+  transports: [
+    // Always log errors to file
+    new winston.transports.File({
+      filename: join(logDir, 'error.log'),
+      level: 'error',
+    }),
+    // Log all levels to combined file in production
+    ...(config.isDev
+      ? []
+      : [
+          new winston.transports.File({
+            filename: join(logDir, 'app.log'),
+          }),
+        ]),
+    // Console transport for development
+    ...(config.isDev
+      ? [
+          new winston.transports.Console({
+            format: winston.format.combine(
+              winston.format.colorize({ all: true }),
+              winston.format.simple()
+            ),
+          }),
+        ]
+      : []),
+  ],
+});
+
+export default logger;

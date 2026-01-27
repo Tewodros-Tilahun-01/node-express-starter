@@ -7,7 +7,8 @@ import express, {
   type Response,
 } from 'express';
 import helmet from 'helmet';
-import { errorLogger, httpLogger } from './middlewares/logging';
+import config from './config';
+import { errorLogger, httpLogger } from './middlewares/loggermiddleware';
 
 const app: Application = express();
 
@@ -24,26 +25,11 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
 // Health check endpoint
-app.get('/health', (_req: Request, res: Response) => {
+app.get('/', (_req: Request, res: Response) => {
   res.status(200).json({
     status: 'healthy',
     timestamp: new Date().toISOString(),
   });
-});
-
-// Sample route with logging
-app.get('/', (req: Request, res: Response) => {
-  req.log.info('Home route accessed');
-  res.json({
-    message: 'Hello World!',
-    timestamp: new Date().toISOString(),
-  });
-});
-
-// Sample error route for testing
-app.get('/error', (_req: Request, _ress: Response, next: NextFunction) => {
-  const error = new Error('This is a test error');
-  next(error);
 });
 
 // 404 handler
@@ -59,14 +45,10 @@ app.use(errorLogger);
 
 // Global error handler
 app.use((err: Error, _req: Request, res: Response, _nextt: NextFunction) => {
-  const statusCode = (err as any).statusCode || 500;
-
+  const statusCode = (err as Error & { statusCode?: number }).statusCode || 500;
   res.status(statusCode).json({
     success: false,
-    message:
-      process.env.NODE_ENV === 'production'
-        ? 'Internal server error'
-        : err.message,
+    message: config.isProd ? 'Internal server error' : err.message,
   });
 });
 
