@@ -8,12 +8,14 @@ import express, {
 } from 'express';
 import helmet from 'helmet';
 import config from './config';
-import { errorLogger, httpLogger } from './middlewares/loggermiddleware';
+import { errorHandler, successHandler } from './config/morgan';
+import { errorLogger } from './middlewares/error';
 
 const app: Application = express();
 
-// HTTP request logging middleware
-app.use(httpLogger);
+// HTTP request logging middleware - success and error handlers
+app.use(successHandler);
+app.use(errorHandler);
 
 // Security middleware
 app.use(helmet());
