@@ -10,9 +10,7 @@ export const logger = winston.createLogger({
   format: winston.format.combine(
     winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
     winston.format.errors({ stack: true }),
-    winston.format.printf(
-      (info) => `${info.timestamp} ${info.level}: ${info.message}`
-    )
+    winston.format.json()
   ),
   transports: [
     // Always log errors to file
@@ -37,9 +35,9 @@ export const logger = winston.createLogger({
                 format: 'HH:mm:ss',
               }),
               winston.format.colorize(),
-              winston.format.simple(),
               winston.format.printf(
-                (info) => `[${info.level}]: ${info.timestamp} ${info.message}`
+                (info) =>
+                  `[${info.level}]: ${info.timestamp} ${info.stack || info.message} `
               )
             ),
           }),
