@@ -3,10 +3,13 @@
   "version": "1.0.0",
   "description": "",
   "main": "dist/server.js",
+  "_moduleAliases": {
+    "@": "dist"
+  },
   "scripts": {
     "build": "tsc",
     "start": "node dist/server.js",
-    "dev": "ts-node-dev --respawn --transpile-only --quiet src/server.ts",
+    "dev": "ts-node-dev --respawn --transpile-only --quiet -r tsconfig-paths/register src/server.ts",
     "dev:watch": "tsc --watch",
     "build:watch": "tsc --watch",
     "clear": "rm -rf dist",
@@ -30,6 +33,7 @@
     "express": "^5.2.1",
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.3",
+    "module-alias": "^2.2.3",
     "morgan": "^1.10.1",
     "multer": "^2.0.2",
     "winston": "^3.19.0"
@@ -40,12 +44,14 @@
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
     "@types/jsonwebtoken": "^9.0.10",
+    "@types/module-alias": "^2.0.4",
     "@types/morgan": "^1.9.10",
     "@types/multer": "^2.0.0",
     "@types/node": "^25.0.10",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.7",
     "ts-node-dev": "^2.0.0",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.9.3"
   },
   "lint-staged": {

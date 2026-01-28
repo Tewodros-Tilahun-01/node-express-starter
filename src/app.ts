@@ -7,9 +7,9 @@ import express, {
   type Response,
 } from 'express';
 import helmet from 'helmet';
-import config from './config';
-import { errorHandler, successHandler } from './config/morgan';
-import { errorLogger } from './middlewares/error';
+import config from '@/config';
+import { errorHandler, successHandler } from '@/config/morgan';
+import { errorLogger } from '@/middlewares/error';
 
 const app: Application = express();
 

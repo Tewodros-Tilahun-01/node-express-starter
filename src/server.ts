@@ -1,6 +1,7 @@
-import app from './app';
-import config from './config';
-import { logger } from './config/logger';
+import 'module-alias/register';
+import app from '@/app';
+import config from '@/config';
+import { logger } from '@/config/logger';
 
 const PORT: number = config.port || 3000;
 

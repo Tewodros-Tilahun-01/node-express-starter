@@ -1,6 +1,6 @@
 import { join } from 'node:path';
 import winston from 'winston';
-import config from './index';
+import config from '@/config';
 
 // Create logs directory path
 const logDir = join(process.cwd(), 'logs');

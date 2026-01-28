@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import type { Request, RequestHandler, Response } from 'express';
 import morgan from 'morgan';
-import config from './index';
+import config from '@/config';
 
 // Custom token (used only in prod)
 morgan.token('message', (_req: Request, res: Response) => {

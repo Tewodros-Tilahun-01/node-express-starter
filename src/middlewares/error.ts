@@ -1,5 +1,5 @@
 import type { NextFunction, Request, Response } from 'express';
-import { logger } from '../config/logger';
+import { logger } from '@/config/logger';
 
 // Simple error logging middleware (uses Winston)
 export const errorLogger = (
