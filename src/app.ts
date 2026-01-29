@@ -7,9 +7,9 @@ import express, {
   type Response,
 } from 'express';
 import helmet from 'helmet';
-import config from '@/config';
 import { errorHandler, successHandler } from '@/config/morgan';
-import { errorLogger } from '@/middlewares/error';
+import { errorConverter, globalErrorHandler } from '@/middlewares/error';
+import { AppError } from '@/utils/AppError';
 
 const app: Application = express();
 
@@ -35,23 +35,15 @@ app.get('/', (_req: Request, res: Response) => {
 });
 
 // 404 handler
-app.use((req: Request, res: Response) => {
-  res.status(404).json({
-    success: false,
-    message: `Route ${req.originalUrl} not found`,
-  });
+app.use((req: Request, _res: Response, next: NextFunction) => {
+  const err = AppError.notFound(`Route ${req.originalUrl} not found`);
+  next(err);
 });
 
-// Error logging middleware
-app.use(errorLogger);
+// Error converter middleware
+app.use(errorConverter);
 
 // Global error handler
-app.use((err: Error, _req: Request, res: Response, _nextt: NextFunction) => {
-  const statusCode = (err as Error & { statusCode?: number }).statusCode || 500;
-  res.status(statusCode).json({
-    success: false,
-    message: config.isProd ? 'Internal server error' : err.message,
-  });
-});
+app.use(globalErrorHandler);
 
 export default app;
