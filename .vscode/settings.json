@@ -24,8 +24,8 @@
     "*.json": "json",
     "*.jsonc": "jsonc"
   }
-
-
-
-  
+,
+ "[prisma]": {
+    "editor.defaultFormatter": "Prisma.prisma" 
+  }  
 }

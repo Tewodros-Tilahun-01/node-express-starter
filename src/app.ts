@@ -8,7 +8,7 @@ import express, {
 } from 'express';
 import helmet from 'helmet';
 import { errorHandler, successHandler } from '@/config/morgan';
-import { errorConverter, globalErrorHandler } from '@/middlewares/error';
+import { errorConverter, globalErrorHandler } from '@/middlewares/errorHandler';
 import { AppError } from '@/utils/AppError';
 
 const app: Application = express();

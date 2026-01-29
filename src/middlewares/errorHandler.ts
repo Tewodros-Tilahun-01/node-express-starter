@@ -1,9 +1,23 @@
-import { Prisma } from '@prisma/client';
 import type { NextFunction, Request, Response } from 'express';
 import httpStatus from 'http-status';
 import config from '@/config';
 import { logger } from '@/config/logger';
 import { AppError } from '@/utils/AppError';
+import { prismaErrorMapper } from '@/utils/prismaErrorMapper';
+import { Prisma } from '../generated/prisma/client';
+
+/**
+ * Check if error is a Prisma client error
+ */
+const isPrismaError = (error: unknown): boolean => {
+  return (
+    error instanceof Prisma.PrismaClientKnownRequestError ||
+    error instanceof Prisma.PrismaClientUnknownRequestError ||
+    error instanceof Prisma.PrismaClientRustPanicError ||
+    error instanceof Prisma.PrismaClientInitializationError ||
+    error instanceof Prisma.PrismaClientValidationError
+  );
+};
 
 /**
  * Error converter middleware
@@ -18,12 +32,16 @@ export const errorConverter = (
   let error = err;
 
   if (!(error instanceof AppError)) {
-    const statusCode =
-      error.statusCode || error instanceof Prisma.PrismaClientKnownRequestError
-        ? httpStatus.BAD_REQUEST
-        : httpStatus.INTERNAL_SERVER_ERROR;
-    const message = error.message || 'Bad Request';
-    error = new AppError(statusCode, message, false, error.stack);
+    // Check if it's a Prisma error and use the mapper
+    if (isPrismaError(error)) {
+      error = prismaErrorMapper(error);
+    } else {
+      // Handle other errors
+      const statusCode = error.statusCode || httpStatus.INTERNAL_SERVER_ERROR;
+      const message = error.message || 'Internal Server Error';
+      const isOperational = !!error.statusCode; // Operational if it has an explicit status code
+      error = new AppError(statusCode, message, isOperational, error.stack);
+    }
   }
 
   next(error);

@@ -61,15 +61,6 @@ export class AppError extends Error {
   }
 
   /**
-   * Create an Unprocessable Entity error (422)
-   */
-  static unprocessableEntity(
-    message: string = 'Unprocessable Entity'
-  ): AppError {
-    return new AppError(httpStatus.UNPROCESSABLE_ENTITY, message);
-  }
-
-  /**
    * Create an Internal Server Error (500)
    */
   static internal(message: string = 'Internal Server Error'): AppError {

@@ -11,6 +11,9 @@ interface Config {
   isProd: boolean;
   port: number;
   logLevel: string;
+  database: {
+    url: string | undefined;
+  };
   secrets: {
     jwt: string | undefined;
     jwtExp: string;
@@ -24,6 +27,9 @@ const baseConfig: Config = {
   isProd: env === 'production',
   port: parseInt(process.env.PORT || '3000', 10),
   logLevel: process.env.LOG_LEVEL || (env === 'development' ? 'debug' : 'info'),
+  database: {
+    url: process.env.DATABASE_URL,
+  },
   secrets: {
     jwt: process.env.JWT_SECRET,
     jwtExp: process.env.JWT_EXP || '7d',
