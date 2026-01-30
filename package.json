@@ -41,7 +41,8 @@
     "morgan": "^1.10.1",
     "multer": "^2.0.2",
     "prisma": "^7.3.0",
-    "winston": "^3.19.0"
+    "winston": "^3.19.0",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@biomejs/biome": "2.3.12",

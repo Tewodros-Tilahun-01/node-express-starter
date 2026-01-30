@@ -9,6 +9,7 @@ import express, {
 import helmet from 'helmet';
 import { errorHandler, successHandler } from '@/config/morgan';
 import { errorConverter, globalErrorHandler } from '@/middlewares/errorHandler';
+import routes from '@/routes';
 import { AppError } from '@/utils/AppError';
 
 const app: Application = express();
@@ -26,13 +27,8 @@ app.use(compression());
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
-// Health check endpoint
-app.get('/', (_req: Request, res: Response) => {
-  res.status(200).json({
-    status: 'healthy',
-    timestamp: new Date().toISOString(),
-  });
-});
+// API routes
+app.use('/api/v1', routes);
 
 // 404 handler
 app.use((req: Request, _res: Response, next: NextFunction) => {

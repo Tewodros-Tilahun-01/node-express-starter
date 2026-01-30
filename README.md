@@ -3,6 +3,7 @@
 ## 🚀 Tech Stack
 - **TypeScript** - Strict type checking
 - **Express.js** - Web framework
+- **Zod** - Runtime type validation and parsing
 - **Biome** - Fast linting and formatting
 - **Husky** - Git hooks for code quality
 - **Lint-staged** - Run checks only on staged files
@@ -13,15 +14,37 @@ src/
 ├── app.ts              # Express app setup
 ├── server.ts           # Server entry point
 ├── config/             # Configuration files
+│   ├── env.validation.ts # Environment variable validation
 ├── controllers/        # Route controllers
 ├── middlewares/        # Express middleware
+│   ├── validate.ts     # Zod validation middleware
 ├── models/             # Type definitions
 ├── routes/             # API routes
 ├── services/           # Business logic
 ├── utils/              # Helper functions
-├── validators/         # Input validation
+├── validators/         # Zod validation schemas
+│   ├── user.validator.ts    # User-specific validations
+│   ├── common.validator.ts  # Reusable validation schemas
+│   └── index.ts        # Validator exports
 └── scripts/            # Database scripts
 ```
+
+## 🛡️ Validation with Zod
+This project uses Zod for runtime type validation:
+
+### Basic Usage
+```typescript
+import { validate } from '@/middlewares/validate';
+import { createUserSchema } from '@/validators/user.validator';
+
+// In routes
+router.post('/', validate({ body: createUserSchema }), createUser);
+```
+
+### Available Validators
+- **User validators**: Create, update, query users
+- **Common validators**: Pagination, search, sorting
+- **Environment validation**: Startup environment checks
 
 ## 🛠️ Available Scripts
 - `npm run build` - Compile TypeScript
@@ -55,9 +78,18 @@ src/
 
 ## 🎯 Getting Started
 1. `npm install` - Install dependencies
-2. `npm run build` - Build the project
-3. `npm run dev` - Start development server
-4. Make changes and commit with conventional format
+2. Copy `.env.example` to `.env` and configure
+3. `npm run build` - Build the project
+4. `npm run dev` - Start development server
+5. Make changes and commit with conventional format
+
+## 🔍 API Endpoints
+- `GET /api/v1/health` - Health check
+- `GET /api/v1/users` - Get users (with pagination/search)
+- `GET /api/v1/users/:id` - Get user by ID
+- `POST /api/v1/users` - Create user
+- `PUT /api/v1/users/:id` - Update user
+- `DELETE /api/v1/users/:id` - Delete user
 
 ## ✅ Example Commit Messages
 - `feat: add user authentication`
