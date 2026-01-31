@@ -36,8 +36,6 @@ export const validate = (schemas: {
           );
         }
         req.validatedBody = result.data;
-        // Also update the original body for backward compatibility
-        Object.assign(req.body, result.data);
       }
 
       // Validate query parameters
@@ -53,8 +51,6 @@ export const validate = (schemas: {
           );
         }
         req.validatedQuery = result.data;
-        // Also update the original query for backward compatibility
-        Object.assign(req.query, result.data);
       }
 
       // Validate path parameters
@@ -70,8 +66,6 @@ export const validate = (schemas: {
           );
         }
         req.validatedParams = result.data;
-        // Also update the original params for backward compatibility
-        Object.assign(req.params, result.data);
       }
 
       next();

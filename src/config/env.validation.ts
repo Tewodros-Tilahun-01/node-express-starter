@@ -5,11 +5,8 @@ const envSchema = z.object({
   NODE_ENV: z
     .enum(['development', 'production', 'test'])
     .default('development'),
-  PORT: z.string().regex(/^\d+$/).transform(Number).default(5000),
+  PORT: z.string().regex(/^\d+$/).transform(Number).default(3000),
   LOG_LEVEL: z.enum(['error', 'warn', 'info', 'debug']).default('info'),
-
-  // Database
-  DATABASE_URL: z.string().url('Invalid database URL'),
 
   // Security
   JWT_SECRET: z.string().min(10, 'JWT secret must be at least 10 characters'),

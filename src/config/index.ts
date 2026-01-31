@@ -13,9 +13,6 @@ interface Config {
   isProd: boolean;
   port: number;
   logLevel: string;
-  database: {
-    url: string;
-  };
   secrets: {
     jwt: string;
     jwtExp: string;
@@ -29,9 +26,6 @@ const baseConfig: Config = {
   isProd: env.NODE_ENV === 'production',
   port: env.PORT,
   logLevel: env.LOG_LEVEL,
-  database: {
-    url: env.DATABASE_URL,
-  },
   secrets: {
     jwt: env.JWT_SECRET,
     jwtExp: env.JWT_EXP,

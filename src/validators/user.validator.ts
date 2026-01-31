@@ -9,7 +9,7 @@ export const userSchema = z.object({
       (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email),
       'Invalid email format'
     ),
-  name: z.string().nullable(),
+  name: z.string(),
 });
 
 // Create user schema (without id, name is optional)
@@ -20,7 +20,7 @@ export const createUserSchema = z.object({
       (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email),
       'Invalid email format'
     ),
-  name: z.string().optional(),
+  name: z.string(),
 });
 
 // Update user schema (all fields optional)
@@ -32,14 +32,14 @@ export const updateUserSchema = z.object({
       'Invalid email format'
     )
     .optional(),
-  name: z.string().optional(),
+  name: z.string(),
 });
 
 // Query parameters schema for listing users
 export const getUsersQuerySchema = z.object({
-  page: z.string().regex(/^\d+$/).transform(Number).default(1),
-  limit: z.string().regex(/^\d+$/).transform(Number).default(10),
-  search: z.string().optional(),
+  page: z.string().regex(/^\d+$/).default('1').optional().transform(Number),
+  limit: z.string().regex(/^\d+$/).default('10').optional().transform(Number),
+  search: z.string().optional().default(''),
 });
 
 // Path parameters schema
