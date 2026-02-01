@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { userController } from '@/controllers';
 import { validateMiddleware } from '@/middlewares';
-import { userValidator } from '@/validators';
+import * as userValidator from '@/validators/user.validator';
 
 const router = Router();
 

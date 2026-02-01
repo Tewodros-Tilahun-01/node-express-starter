@@ -3,7 +3,7 @@ import { z } from 'zod';
 // Environment variables validation schema
 const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
-  PORT: z.string().regex(/^\d+$/).transform(Number).default(3000),
+  PORT: z.string().regex(/^\d+$/).transform(Number).default(5000),
   LOG_LEVEL: z.enum(['error', 'warn', 'info', 'debug']).default('info'),
 
   // Security - JWT
@@ -18,6 +18,16 @@ const envSchema = z.object({
     .string()
     .default('true')
     .transform((val) => val === 'true'),
+  COOKIE_ACCESS_TOKEN_MAX_AGE: z
+    .string()
+    .regex(/^\d+$/)
+    .default(String(15 * 60 * 1000))
+    .transform(Number), // 15 minutes in milliseconds
+  COOKIE_REFRESH_TOKEN_MAX_AGE: z
+    .string()
+    .regex(/^\d+$/)
+    .default(String(7 * 24 * 60 * 60 * 1000))
+    .transform(Number), // 7 days in milliseconds
 });
 
 /**

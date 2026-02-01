@@ -2,12 +2,12 @@ import type { Request, Response } from 'express';
 import { userService } from '@/services';
 import { catchAsync } from '@/utils/catchAsync';
 import { sendPaginatedResponse, sendSuccess, sendSuccessMessage } from '@/utils/response';
-import type { userValidator } from '@/validators';
-
-type CreateUserInput = userValidator.CreateUserInput;
-type GetUsersQuery = userValidator.GetUsersQuery;
-type UpdateUserInput = userValidator.UpdateUserInput;
-type UserParams = userValidator.UserParams;
+import type {
+  CreateUserInput,
+  GetUsersQuery,
+  UpdateUserInput,
+  UserParams,
+} from '@/validators/user.validator';
 
 /**
  * Get all users with pagination and search

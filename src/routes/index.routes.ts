@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { authMiddleware } from '@/middlewares';
 import authRoutes from './auth.routes';
 import userRoutes from './user.routes';
 
@@ -15,6 +16,6 @@ router.get('/health', (_req, res) => {
 
 // API routes
 router.use('/auth', authRoutes);
-router.use('/users', userRoutes);
+router.use('/users', authMiddleware.authenticate, userRoutes);
 
 export default router;

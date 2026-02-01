@@ -4,7 +4,7 @@ import type { Request, RequestHandler, Response } from 'express';
 import morgan from 'morgan';
 import config from '@/config/config';
 
-// Custom token (used only in prod)
+// Custom token for error message
 morgan.token('message', (_req: Request, res: Response) => {
   return (res.locals as { errorMessage?: string }).errorMessage || '';
 });
@@ -14,12 +14,25 @@ let errorHandler: RequestHandler;
 
 if (config.isDev) {
   // ===== DEVELOPMENT =====
-  successHandler = morgan('dev', {
-    skip: (_req: Request, res: Response) => res.statusCode >= 400,
+
+  // Custom format function for dev logs
+  const devFormat: morgan.FormatFn = (tokens, req, res) => {
+    // call default 'dev' formatter and append error message if exists
+    const expressRes = res as unknown as Response;
+    const devFormatter = (morgan as unknown as Record<string, morgan.FormatFn>).dev;
+    const baseLog = devFormatter ? devFormatter(tokens, req, res) : '';
+    return (
+      baseLog +
+      (expressRes.locals?.errorMessage ? ` - error-message: ${expressRes.locals.errorMessage}` : '')
+    );
+  };
+
+  successHandler = morgan(devFormat, {
+    skip: (_req, res) => res.statusCode >= 400,
   });
 
-  errorHandler = morgan('dev', {
-    skip: (_req: Request, res: Response) => res.statusCode < 400,
+  errorHandler = morgan(devFormat, {
+    skip: (_req, res) => res.statusCode < 400,
   });
 } else {
   // ===== PRODUCTION =====
@@ -29,22 +42,20 @@ if (config.isDev) {
     { flags: 'a' }
   );
 
-  // Success logs (2xx–3xx)
   const successResponseFormat =
     ':date[iso] :remote-addr - :method :url :status :res[content-length] - :response-time ms';
 
   successHandler = morgan(successResponseFormat, {
     stream: accessLogStream,
-    skip: (_req: Request, res: Response) => res.statusCode >= 400,
+    skip: (_req, res) => res.statusCode >= 400,
   });
 
-  // Error logs (4xx–5xx)
   const errorResponseFormat =
-    ':date[iso] :remote-addr - :method :url :status :res[content-length] - :response-time ms  - error-message: :message';
+    ':date[iso] :remote-addr - :method :url :status :res[content-length] - :response-time ms - error-message: :message';
 
   errorHandler = morgan(errorResponseFormat, {
     stream: accessLogStream,
-    skip: (_req: Request, res: Response) => res.statusCode < 400,
+    skip: (_req, res) => res.statusCode < 400,
   });
 }
 

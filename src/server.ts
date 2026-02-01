@@ -3,7 +3,7 @@ import config from '@/config/config';
 import { logger } from '@/config/logger';
 import { connectDatabase } from './config/prisma';
 
-const PORT: number = config.port || 3000;
+const PORT: number = config.port || 5000;
 
 // Startup function
 const _startServer = async (): Promise<void> => {

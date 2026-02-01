@@ -4,10 +4,8 @@ import config from '@/config/config';
 import passport from '@/config/passport';
 import { authService } from '@/services';
 import { AppError } from '@/utils/AppError';
-import type { authValidator } from '@/validators';
-
-type LoginInput = authValidator.LoginInput;
-type RegisterInput = authValidator.RegisterInput;
+import { sendSuccess, sendSuccessMessage } from '@/utils/response';
+import type { LoginInput, RegisterInput } from '@/validators/auth.validator';
 
 /**
  * Cookie configuration for tokens
@@ -16,7 +14,7 @@ const getAccessTokenCookieOptions = () => ({
   httpOnly: true, // Prevents XSS attacks
   secure: config.isProd || config.cookie.secure, // HTTPS only in production
   sameSite: 'strict' as const, // CSRF protection
-  maxAge: 15 * 60 * 1000, // 15 minutes in milliseconds
+  maxAge: config.cookie.accessTokenMaxAge,
   domain: config.cookie.domain,
 });
 
@@ -24,7 +22,7 @@ const getRefreshTokenCookieOptions = () => ({
   httpOnly: true, // Prevents XSS attacks
   secure: config.isProd || config.cookie.secure, // HTTPS only in production
   sameSite: 'strict' as const, // CSRF protection
-  maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in milliseconds
+  maxAge: config.cookie.refreshTokenMaxAge,
   domain: config.cookie.domain,
   path: '/api/v1/auth/refresh', // Only sent to refresh endpoint
 });
@@ -41,11 +39,7 @@ export const register = async (
   try {
     const user = await authService.registerUser(req.body);
 
-    res.status(httpStatus.CREATED).json({
-      success: true,
-      message: 'User registered successfully',
-      data: { user },
-    });
+    sendSuccess(res, { user }, 'User registered successfully', httpStatus.CREATED);
   } catch (error) {
     next(error);
   }
@@ -84,16 +78,16 @@ export const login = async (
         res.cookie('accessToken', accessToken, getAccessTokenCookieOptions());
         res.cookie('refreshToken', refreshToken, getRefreshTokenCookieOptions());
 
-        res.status(httpStatus.OK).json({
-          success: true,
-          message: 'Login successful',
-          data: {
+        sendSuccess(
+          res,
+          {
             user,
             // Also return tokens for stateless API clients
             accessToken,
             refreshToken,
           },
-        });
+          'Login successful'
+        );
       } catch (error) {
         next(error);
       }
@@ -121,10 +115,9 @@ export const refresh = async (req: Request, res: Response, next: NextFunction) =
     res.cookie('accessToken', tokens.accessToken, getAccessTokenCookieOptions());
     res.cookie('refreshToken', tokens.refreshToken, getRefreshTokenCookieOptions());
 
-    res.status(httpStatus.OK).json({
-      success: true,
-      message: 'Tokens refreshed successfully',
-      data: {
+    sendSuccess(
+      res,
+      {
         user: {
           id: user.id,
           email: user.email,
@@ -134,7 +127,8 @@ export const refresh = async (req: Request, res: Response, next: NextFunction) =
         accessToken: tokens.accessToken,
         refreshToken: tokens.refreshToken,
       },
-    });
+      'Tokens refreshed successfully'
+    );
   } catch (error) {
     next(error);
   }
@@ -157,10 +151,7 @@ export const logout = async (req: Request, res: Response, next: NextFunction) =>
     res.clearCookie('accessToken', getAccessTokenCookieOptions());
     res.clearCookie('refreshToken', getRefreshTokenCookieOptions());
 
-    res.status(httpStatus.OK).json({
-      success: true,
-      message: 'Logout successful',
-    });
+    sendSuccessMessage(res, 'Logout successful');
   } catch (error) {
     next(error);
   }
@@ -183,10 +174,7 @@ export const logoutAll = async (req: Request, res: Response, next: NextFunction)
     res.clearCookie('accessToken', getAccessTokenCookieOptions());
     res.clearCookie('refreshToken', getRefreshTokenCookieOptions());
 
-    res.status(httpStatus.OK).json({
-      success: true,
-      message: 'Logged out from all devices',
-    });
+    sendSuccessMessage(res, 'Logged out from all devices');
   } catch (error) {
     next(error);
   }
@@ -202,10 +190,7 @@ export const getCurrentUser = async (req: Request, res: Response, next: NextFunc
       throw AppError.unauthorized('Authentication required');
     }
 
-    res.status(httpStatus.OK).json({
-      success: true,
-      data: { user: req.user },
-    });
+    sendSuccess(res, { user: req.user }, 'User retrieved successfully');
   } catch (error) {
     next(error);
   }

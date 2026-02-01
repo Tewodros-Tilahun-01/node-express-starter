@@ -97,7 +97,7 @@ npx prisma migrate dev
 npm run dev
 ```
 
-The API will be available at `http://localhost:3000`
+The API will be available at `http://localhost:5000`
 
 ## 🛠️ Available Scripts
 
@@ -131,7 +131,7 @@ DELETE /api/v1/users/:id       # Delete user
 ### Example Request
 ```bash
 # Create a user
-curl -X POST http://localhost:3000/api/v1/users \
+curl -X POST http://localhost:5000/api/v1/users \
   -H "Content-Type: application/json" \
   -d '{"name": "John Doe", "email": "john@example.com"}'
 ```
@@ -248,7 +248,7 @@ npm start
 Environment variables for production:
 ```env
 NODE_ENV=production
-PORT=3000
+PORT=5000
 DATABASE_URL=your_production_db_url
 JWT_SECRET=your_production_secret
 LOG_LEVEL=info

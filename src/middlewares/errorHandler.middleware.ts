@@ -1,9 +1,9 @@
 import type { NextFunction, Request, Response } from 'express';
 import httpStatus from 'http-status';
 import config from '@/config/config';
-import { logger } from '@/config/logger';
 import { AppError } from '@/utils/AppError';
 import { prismaErrorMapper } from '@/utils/prismaErrorMapper';
+import logger from '../config/logger';
 import { Prisma } from '../generated/prisma/client';
 
 /**
@@ -65,7 +65,7 @@ export const globalErrorHandler = (
   }
 
   const response = {
-    error: true,
+    success: false,
     code: statusCode,
     message,
     ...(config.isDev && { stack: err.stack }),
@@ -73,7 +73,9 @@ export const globalErrorHandler = (
 
   res.locals.errorMessage = message;
 
-  if (config.isDev) {
+  if (err.statusCode < 500) {
+    logger.warn(err);
+  } else {
     logger.error(err);
   }
 

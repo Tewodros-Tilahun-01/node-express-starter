@@ -22,6 +22,8 @@ interface Config {
   cookie: {
     domain?: string;
     secure: boolean;
+    accessTokenMaxAge: number;
+    refreshTokenMaxAge: number;
   };
 }
 
@@ -41,6 +43,8 @@ const baseConfig: Config = {
   cookie: {
     domain: env.COOKIE_DOMAIN,
     secure: env.COOKIE_SECURE,
+    accessTokenMaxAge: env.COOKIE_ACCESS_TOKEN_MAX_AGE,
+    refreshTokenMaxAge: env.COOKIE_REFRESH_TOKEN_MAX_AGE,
   },
 };
 

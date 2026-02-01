@@ -1,10 +1,6 @@
 import { prisma } from '@/config/prisma';
 import { AppError } from '@/utils/AppError';
-import type { userValidator } from '@/validators';
-
-type CreateUserInput = userValidator.CreateUserInput;
-type GetUsersQuery = userValidator.GetUsersQuery;
-type UpdateUserInput = userValidator.UpdateUserInput;
+import type { CreateUserInput, GetUsersQuery, UpdateUserInput } from '@/validators/user.validator';
 
 /**
  * Get all users with pagination and search

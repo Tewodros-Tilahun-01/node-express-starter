@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { authController } from '@/controllers';
 import { authMiddleware, validateMiddleware } from '@/middlewares';
-import { authValidator } from '@/validators';
+import * as authValidator from '@/validators/auth.validator';
 
 const router = Router();
 
@@ -28,7 +28,7 @@ router.post('/login', validateMiddleware.validate(authValidator.loginSchema), au
  * @desc    Refresh access token using refresh token
  * @access  Public (requires refresh token)
  */
-router.post('/refresh', authController.refresh);
+router.post('/refresh', authMiddleware.authenticate, authController.refresh);
 
 /**
  * @route   POST /api/v1/auth/logout
