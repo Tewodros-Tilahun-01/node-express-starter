@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import * as userService from '@/services/user.service';
+import { userService } from '@/services';
 import { catchAsync } from '@/utils/catchAsync';
 import {
   sendPaginatedResponse,
@@ -11,7 +11,7 @@ import type {
   GetUsersQuery,
   UpdateUserInput,
   UserParams,
-} from '@/validators/user.validator';
+} from '@/validators';
 
 /**
  * Get all users with pagination and search

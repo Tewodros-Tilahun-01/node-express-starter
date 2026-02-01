@@ -8,9 +8,22 @@ const envSchema = z.object({
   PORT: z.string().regex(/^\d+$/).transform(Number).default(3000),
   LOG_LEVEL: z.enum(['error', 'warn', 'info', 'debug']).default('info'),
 
-  // Security
-  JWT_SECRET: z.string().min(10, 'JWT secret must be at least 10 characters'),
-  JWT_EXP: z.string().default('7d'),
+  // Security - JWT
+  JWT_ACCESS_SECRET: z
+    .string()
+    .min(32, 'JWT access secret must be at least 32 characters'),
+  JWT_REFRESH_SECRET: z
+    .string()
+    .min(32, 'JWT refresh secret must be at least 32 characters'),
+  JWT_ACCESS_EXPIRATION: z.string().default('15m'), // 5-15 minutes
+  JWT_REFRESH_EXPIRATION: z.string().default('7d'), // 7-30 days
+
+  // Cookie settings
+  COOKIE_DOMAIN: z.string().optional(),
+  COOKIE_SECURE: z
+    .string()
+    .default('true')
+    .transform((val) => val === 'true'),
 });
 
 /**

@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient } from '../generated/prisma/client';
-import config from './index';
+import config from './config';
 import { logger } from './logger';
 
 declare global {

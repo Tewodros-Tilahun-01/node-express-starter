@@ -14,8 +14,14 @@ interface Config {
   port: number;
   logLevel: string;
   secrets: {
-    jwt: string;
-    jwtExp: string;
+    jwtAccessSecret: string;
+    jwtRefreshSecret: string;
+    jwtAccessExpiration: string;
+    jwtRefreshExpiration: string;
+  };
+  cookie: {
+    domain?: string;
+    secure: boolean;
   };
 }
 
@@ -27,8 +33,14 @@ const baseConfig: Config = {
   port: env.PORT,
   logLevel: env.LOG_LEVEL,
   secrets: {
-    jwt: env.JWT_SECRET,
-    jwtExp: env.JWT_EXP,
+    jwtAccessSecret: env.JWT_ACCESS_SECRET,
+    jwtRefreshSecret: env.JWT_REFRESH_SECRET,
+    jwtAccessExpiration: env.JWT_ACCESS_EXPIRATION,
+    jwtRefreshExpiration: env.JWT_REFRESH_EXPIRATION,
+  },
+  cookie: {
+    domain: env.COOKIE_DOMAIN,
+    secure: env.COOKIE_SECURE,
   },
 };
 

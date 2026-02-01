@@ -1,6 +1,6 @@
-// Export all validators from a central location
-
-// Re-export validate middleware
-export { validate, validateSchema } from '@/middlewares/validate';
+/**
+ * Central export for all validators
+ */
+export * from './auth.validator';
 export * from './common.validator';
 export * from './user.validator';

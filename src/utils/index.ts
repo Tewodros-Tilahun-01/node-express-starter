@@ -10,3 +10,5 @@ export {
   sendSuccess,
   sendSuccessMessage,
 } from './response';
+
+export { generateUniqueUsername } from './usernameGenerator';

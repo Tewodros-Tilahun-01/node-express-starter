@@ -1,38 +1,48 @@
 import { Router } from 'express';
-import {
-  createUser,
-  deleteUser,
-  getUserById,
-  getUsers,
-  updateUser,
-} from '@/controllers/user.controller';
-import { validate } from '@/middlewares/validate';
+import { userController } from '@/controllers';
+import { validate } from '@/middlewares';
 import {
   createUserSchema,
   getUsersQuerySchema,
   updateUserSchema,
   userParamsSchema,
-} from '@/validators/user.validator';
+} from '@/validators';
 
 const router = Router();
 
 // GET /users - Get all users with pagination and search
-router.get('/', validate({ query: getUsersQuerySchema }), getUsers);
+router.get(
+  '/',
+  validate({ query: getUsersQuerySchema }),
+  userController.getUsers
+);
 
 // GET /users/:id - Get user by ID
-router.get('/:id', validate({ params: userParamsSchema }), getUserById);
+router.get(
+  '/:id',
+  validate({ params: userParamsSchema }),
+  userController.getUserById
+);
 
 // POST /users - Create new user
-router.post('/', validate({ body: createUserSchema }), createUser);
+router.post(
+  '/',
+  validate({ body: createUserSchema }),
+  userController.createUser
+);
 
 // PUT /users/:id - Update user by ID
 router.put(
   '/:id',
   validate({ params: userParamsSchema, body: updateUserSchema }),
-  updateUser
+  userController.updateUser
 );
 
 // DELETE /users/:id - Delete user by ID
-router.delete('/:id', validate({ params: userParamsSchema }), deleteUser);
+router.delete(
+  '/:id',
+  validate({ params: userParamsSchema }),
+  userController.deleteUser
+);
 
 export default router;

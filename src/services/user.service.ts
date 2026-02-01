@@ -4,7 +4,7 @@ import type {
   CreateUserInput,
   GetUsersQuery,
   UpdateUserInput,
-} from '@/validators/user.validator';
+} from '@/validators';
 
 /**
  * Get all users with pagination and search
@@ -19,6 +19,7 @@ export const getUsers = async (query: GetUsersQuery) => {
         OR: [
           { name: { contains: search, mode: 'insensitive' as const } },
           { email: { contains: search, mode: 'insensitive' as const } },
+          { username: { contains: search, mode: 'insensitive' as const } },
         ],
       }
     : {};
@@ -30,6 +31,15 @@ export const getUsers = async (query: GetUsersQuery) => {
       skip,
       take: limit,
       orderBy: { id: 'desc' },
+      select: {
+        id: true,
+        email: true,
+        username: true,
+        name: true,
+        avatar: true,
+        createdAt: true,
+        updatedAt: true,
+      },
     }),
     prisma.user.count({ where }),
   ]);
@@ -51,6 +61,15 @@ export const getUsers = async (query: GetUsersQuery) => {
 export const getUserById = async (id: number) => {
   const user = await prisma.user.findUnique({
     where: { id },
+    select: {
+      id: true,
+      email: true,
+      username: true,
+      name: true,
+      avatar: true,
+      createdAt: true,
+      updatedAt: true,
+    },
   });
 
   if (!user) {
@@ -61,7 +80,74 @@ export const getUserById = async (id: number) => {
 };
 
 /**
- * Create new user
+ * Get user by email
+ */
+export const getUserByEmail = async (email: string) => {
+  const user = await prisma.user.findUnique({
+    where: { email },
+    select: {
+      id: true,
+      email: true,
+      username: true,
+      name: true,
+      avatar: true,
+      createdAt: true,
+      updatedAt: true,
+    },
+  });
+
+  if (!user) {
+    throw AppError.notFound(`User with email ${email} not found`);
+  }
+
+  return user;
+};
+
+/**
+ * Get user by username
+ */
+export const getUserByUsername = async (username: string) => {
+  const user = await prisma.user.findUnique({
+    where: { username },
+    select: {
+      id: true,
+      email: true,
+      username: true,
+      name: true,
+      avatar: true,
+      createdAt: true,
+      updatedAt: true,
+    },
+  });
+
+  if (!user) {
+    throw AppError.notFound(`User with username ${username} not found`);
+  }
+
+  return user;
+};
+
+/**
+ * Check if user exists by ID
+ */
+export const userExists = async (id: number): Promise<boolean> => {
+  const user = await prisma.user.findUnique({
+    where: { id },
+    select: { id: true },
+  });
+
+  return !!user;
+};
+
+/**
+ * Get users count
+ */
+export const getUsersCount = async (): Promise<number> => {
+  return prisma.user.count();
+};
+
+/**
+ * Create new user (for admin purposes - use auth.service.registerUser for signup)
  */
 export const createUser = async (userData: CreateUserInput) => {
   // Check if email already exists
@@ -75,6 +161,15 @@ export const createUser = async (userData: CreateUserInput) => {
 
   const user = await prisma.user.create({
     data: userData,
+    select: {
+      id: true,
+      email: true,
+      username: true,
+      name: true,
+      avatar: true,
+      createdAt: true,
+      updatedAt: true,
+    },
   });
 
   return user;
@@ -101,6 +196,15 @@ export const updateUser = async (id: number, userData: UpdateUserInput) => {
   const user = await prisma.user.update({
     where: { id },
     data: userData,
+    select: {
+      id: true,
+      email: true,
+      username: true,
+      name: true,
+      avatar: true,
+      createdAt: true,
+      updatedAt: true,
+    },
   });
 
   return user;
@@ -118,38 +222,4 @@ export const deleteUser = async (id: number) => {
   });
 
   return { message: 'User deleted successfully' };
-};
-
-/**
- * Get user by email
- */
-export const getUserByEmail = async (email: string) => {
-  const user = await prisma.user.findUnique({
-    where: { email },
-  });
-
-  if (!user) {
-    throw AppError.notFound(`User with email ${email} not found`);
-  }
-
-  return user;
-};
-
-/**
- * Check if user exists by ID
- */
-export const userExists = async (id: number): Promise<boolean> => {
-  const user = await prisma.user.findUnique({
-    where: { id },
-    select: { id: true },
-  });
-
-  return !!user;
-};
-
-/**
- * Get users count
- */
-export const getUsersCount = async (): Promise<number> => {
-  return prisma.user.count();
 };

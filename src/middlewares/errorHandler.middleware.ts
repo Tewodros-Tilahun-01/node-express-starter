@@ -1,6 +1,6 @@
 import type { NextFunction, Request, Response } from 'express';
 import httpStatus from 'http-status';
-import config from '@/config';
+import config from '@/config/config';
 import { logger } from '@/config/logger';
 import { AppError } from '@/utils/AppError';
 import { prismaErrorMapper } from '@/utils/prismaErrorMapper';
