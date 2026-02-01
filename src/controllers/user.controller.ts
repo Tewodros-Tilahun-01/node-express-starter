@@ -6,12 +6,12 @@ import {
   sendSuccess,
   sendSuccessMessage,
 } from '@/utils/response';
-import type {
-  CreateUserInput,
-  GetUsersQuery,
-  UpdateUserInput,
-  UserParams,
-} from '@/validators';
+import type { userValidator } from '@/validators';
+
+type CreateUserInput = userValidator.CreateUserInput;
+type GetUsersQuery = userValidator.GetUsersQuery;
+type UpdateUserInput = userValidator.UpdateUserInput;
+type UserParams = userValidator.UserParams;
 
 /**
  * Get all users with pagination and search

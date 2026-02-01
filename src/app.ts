@@ -10,7 +10,7 @@ import express, {
 import helmet from 'helmet';
 import { errorHandler, successHandler } from '@/config/morgan';
 import passport from '@/config/passport';
-import { errorConverter, globalErrorHandler } from '@/middlewares';
+import { errorMiddleware } from '@/middlewares';
 import routes from '@/routes/index.routes';
 import { AppError } from '@/utils/AppError';
 
@@ -48,9 +48,9 @@ app.use((req: Request, _res: Response, next: NextFunction) => {
 });
 
 // Error converter middleware
-app.use(errorConverter);
+app.use(errorMiddleware.errorConverter);
 
 // Global error handler
-app.use(globalErrorHandler);
+app.use(errorMiddleware.globalErrorHandler);
 
 export default app;

@@ -1,6 +1,6 @@
 /**
  * Central export for all validators
  */
-export * from './auth.validator';
-export * from './common.validator';
-export * from './user.validator';
+export * as authValidator from './auth.validator';
+export * as commonValidator from './common.validator';
+export * as userValidator from './user.validator';

@@ -4,7 +4,10 @@ import config from '@/config/config';
 import passport from '@/config/passport';
 import { authService } from '@/services';
 import { AppError } from '@/utils/AppError';
-import type { LoginInput, RegisterInput } from '@/validators';
+import type { authValidator } from '@/validators';
+
+type LoginInput = authValidator.LoginInput;
+type RegisterInput = authValidator.RegisterInput;
 
 /**
  * Cookie configuration for tokens

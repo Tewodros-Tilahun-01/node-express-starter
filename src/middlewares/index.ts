@@ -1,6 +1,6 @@
 /**
  * Central export for all middlewares
  */
-export * from './auth.middleware';
-export * from './errorHandler.middleware';
-export * from './validate.middleware';
+export * as authMiddleware from './auth.middleware';
+export * as errorMiddleware from './errorHandler.middleware';
+export * as validateMiddleware from './validate.middleware';

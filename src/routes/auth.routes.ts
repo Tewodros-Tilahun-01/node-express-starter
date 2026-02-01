@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { authController } from '@/controllers';
-import { authenticate, validate } from '@/middlewares';
-import { loginSchema, registerSchema } from '@/validators';
+import { authMiddleware, validateMiddleware } from '@/middlewares';
+import { authValidator } from '@/validators';
 
 const router = Router();
 
@@ -10,14 +10,22 @@ const router = Router();
  * @desc    Register new user
  * @access  Public
  */
-router.post('/register', validate(registerSchema), authController.register);
+router.post(
+  '/register',
+  validateMiddleware.validate(authValidator.registerSchema),
+  authController.register
+);
 
 /**
  * @route   POST /api/v1/auth/login
  * @desc    Login with username/email and password
  * @access  Public
  */
-router.post('/login', validate(loginSchema), authController.login);
+router.post(
+  '/login',
+  validateMiddleware.validate(authValidator.loginSchema),
+  authController.login
+);
 
 /**
  * @route   POST /api/v1/auth/refresh
@@ -38,13 +46,17 @@ router.post('/logout', authController.logout);
  * @desc    Logout from all devices (revoke all refresh tokens)
  * @access  Protected
  */
-router.post('/logout-all', authenticate, authController.logoutAll);
+router.post(
+  '/logout-all',
+  authMiddleware.authenticate,
+  authController.logoutAll
+);
 
 /**
  * @route   GET /api/v1/auth/me
  * @desc    Get current authenticated user
  * @access  Protected
  */
-router.get('/me', authenticate, authController.getCurrentUser);
+router.get('/me', authMiddleware.authenticate, authController.getCurrentUser);
 
 export default router;
