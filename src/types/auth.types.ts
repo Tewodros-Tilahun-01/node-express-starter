@@ -39,10 +39,7 @@ export type PassportLocalDone = (
 /**
  * Passport JWT Strategy done callback
  */
-export type PassportJwtDone = (
-  error: Error | null,
-  user?: Express.User | false
-) => void;
+export type PassportJwtDone = (error: Error | null, user?: Express.User | false) => void;
 
 /**
  * Register user input

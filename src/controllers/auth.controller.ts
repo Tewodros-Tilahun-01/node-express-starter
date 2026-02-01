@@ -74,20 +74,15 @@ export const login = async (
         }
 
         // Generate token pair
-        const { accessToken, refreshToken } =
-          await authService.generateTokenPair({
-            id: user.id,
-            email: user.email,
-            username: user.username,
-          });
+        const { accessToken, refreshToken } = await authService.generateTokenPair({
+          id: user.id,
+          email: user.email,
+          username: user.username,
+        });
 
         // Set tokens in HTTP-only cookies
         res.cookie('accessToken', accessToken, getAccessTokenCookieOptions());
-        res.cookie(
-          'refreshToken',
-          refreshToken,
-          getRefreshTokenCookieOptions()
-        );
+        res.cookie('refreshToken', refreshToken, getRefreshTokenCookieOptions());
 
         res.status(httpStatus.OK).json({
           success: true,
@@ -110,11 +105,7 @@ export const login = async (
  * Refresh access token using refresh token
  * POST /api/v1/auth/refresh
  */
-export const refresh = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const refresh = async (req: Request, res: Response, next: NextFunction) => {
   try {
     // Get refresh token from cookie or body
     const refreshToken = req.cookies?.refreshToken || req.body?.refreshToken;
@@ -127,16 +118,8 @@ export const refresh = async (
     const { tokens, user } = await authService.rotateRefreshToken(refreshToken);
 
     // Set new tokens in cookies
-    res.cookie(
-      'accessToken',
-      tokens.accessToken,
-      getAccessTokenCookieOptions()
-    );
-    res.cookie(
-      'refreshToken',
-      tokens.refreshToken,
-      getRefreshTokenCookieOptions()
-    );
+    res.cookie('accessToken', tokens.accessToken, getAccessTokenCookieOptions());
+    res.cookie('refreshToken', tokens.refreshToken, getRefreshTokenCookieOptions());
 
     res.status(httpStatus.OK).json({
       success: true,
@@ -161,11 +144,7 @@ export const refresh = async (
  * Logout user - revoke refresh token
  * POST /api/v1/auth/logout
  */
-export const logout = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const logout = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const refreshToken = req.cookies?.refreshToken || req.body?.refreshToken;
 
@@ -191,11 +170,7 @@ export const logout = async (
  * Logout from all devices - revoke all user's refresh tokens
  * POST /api/v1/auth/logout-all
  */
-export const logoutAll = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const logoutAll = async (req: Request, res: Response, next: NextFunction) => {
   try {
     if (!req.user) {
       throw AppError.unauthorized('Authentication required');
@@ -221,11 +196,7 @@ export const logoutAll = async (
  * Get current authenticated user
  * GET /api/v1/auth/me
  */
-export const getCurrentUser = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const getCurrentUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     if (!req.user) {
       throw AppError.unauthorized('Authentication required');

@@ -198,9 +198,7 @@ export const registerUser = async (data: RegisterUserInput) => {
 /**
  * Generate token pair (access + refresh)
  */
-export const generateTokenPair = async (
-  user: TokenUser
-): Promise<TokenPair> => {
+export const generateTokenPair = async (user: TokenUser): Promise<TokenPair> => {
   const accessToken = generateAccessToken(user);
   const refreshToken = generateRefreshToken();
 
@@ -212,9 +210,7 @@ export const generateTokenPair = async (
 /**
  * Refresh token rotation - issue new tokens and revoke old one
  */
-export const rotateRefreshToken = async (
-  oldToken: string
-): Promise<RefreshTokenResult> => {
+export const rotateRefreshToken = async (oldToken: string): Promise<RefreshTokenResult> => {
   // Verify old token
   const tokenRecord = await verifyRefreshToken(oldToken);
 

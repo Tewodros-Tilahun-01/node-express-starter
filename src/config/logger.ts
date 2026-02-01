@@ -36,8 +36,7 @@ export const logger = winston.createLogger({
               }),
               winston.format.colorize(),
               winston.format.printf(
-                (info) =>
-                  `[${info.level}]: ${info.timestamp} ${info.stack || info.message} `
+                (info) => `[${info.level}]: ${info.timestamp} ${info.stack || info.message} `
               )
             ),
           }),

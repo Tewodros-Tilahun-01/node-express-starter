@@ -25,9 +25,7 @@ export const registerSchema = {
           /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
           'Password must contain at least one uppercase letter, one lowercase letter, and one number'
         ),
-      passwordConfirmation: z
-        .string()
-        .min(1, 'Password confirmation is required'),
+      passwordConfirmation: z.string().min(1, 'Password confirmation is required'),
     })
     .refine((data) => data.password === data.passwordConfirmation, {
       message: 'Passwords do not match',

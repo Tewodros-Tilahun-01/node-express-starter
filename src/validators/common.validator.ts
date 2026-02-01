@@ -43,10 +43,7 @@ export const listQuerySchema = z.object({
 export const emailSchema = z
   .string()
   .includes('@')
-  .refine(
-    (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email),
-    'Invalid email format'
-  );
+  .refine((email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email), 'Invalid email format');
 
 // Password validation (for future auth implementation)
 export const passwordSchema = z

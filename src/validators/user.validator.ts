@@ -5,10 +5,7 @@ export const userSchema = z.object({
   id: z.number().int().positive(),
   email: z
     .string()
-    .refine(
-      (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email),
-      'Invalid email format'
-    ),
+    .refine((email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email), 'Invalid email format'),
   name: z.string(),
 });
 
@@ -16,10 +13,7 @@ export const userSchema = z.object({
 export const createUserSchema = z.object({
   email: z
     .string()
-    .refine(
-      (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email),
-      'Invalid email format'
-    ),
+    .refine((email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email), 'Invalid email format'),
   username: z.string().min(3).max(30),
   name: z.string(),
   password: z.string().min(8),
@@ -30,10 +24,7 @@ export const createUserSchema = z.object({
 export const updateUserSchema = z.object({
   email: z
     .string()
-    .refine(
-      (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email),
-      'Invalid email format'
-    )
+    .refine((email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email), 'Invalid email format')
     .optional(),
   username: z.string().min(3).max(30).optional(),
   name: z.string().optional(),

@@ -3,11 +3,7 @@ import type { NextFunction, Request, Response } from 'express';
 /**
  * Type definition for async route handlers
  */
-export type AsyncRouteHandler = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => Promise<void>;
+export type AsyncRouteHandler = (req: Request, res: Response, next: NextFunction) => Promise<void>;
 
 /**
  * Wrapper function to catch async errors in route handlers

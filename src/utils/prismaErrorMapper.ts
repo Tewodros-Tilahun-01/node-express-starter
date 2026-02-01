@@ -20,59 +20,35 @@ export const prismaErrorMapper = (error: unknown): AppError => {
 
       case 'P2003':
         // Foreign key constraint failed
-        return new AppError(
-          httpStatus.BAD_REQUEST,
-          'Invalid relation reference'
-        );
+        return new AppError(httpStatus.BAD_REQUEST, 'Invalid relation reference');
 
       case 'P2014':
         // Required relation missing
-        return new AppError(
-          httpStatus.BAD_REQUEST,
-          'Required relation is missing'
-        );
+        return new AppError(httpStatus.BAD_REQUEST, 'Required relation is missing');
 
       case 'P2021':
         // Table does not exist
-        return new AppError(
-          httpStatus.INTERNAL_SERVER_ERROR,
-          'Database table does not exist'
-        );
+        return new AppError(httpStatus.INTERNAL_SERVER_ERROR, 'Database table does not exist');
 
       case 'P2022':
         // Column does not exist
-        return new AppError(
-          httpStatus.INTERNAL_SERVER_ERROR,
-          'Database column does not exist'
-        );
+        return new AppError(httpStatus.INTERNAL_SERVER_ERROR, 'Database column does not exist');
 
       default:
-        return new AppError(
-          httpStatus.BAD_REQUEST,
-          `Database error: ${error.message}`
-        );
+        return new AppError(httpStatus.BAD_REQUEST, `Database error: ${error.message}`);
     }
   }
 
   if (error instanceof Prisma.PrismaClientUnknownRequestError) {
-    return new AppError(
-      httpStatus.INTERNAL_SERVER_ERROR,
-      'Unknown database error'
-    );
+    return new AppError(httpStatus.INTERNAL_SERVER_ERROR, 'Unknown database error');
   }
 
   if (error instanceof Prisma.PrismaClientRustPanicError) {
-    return new AppError(
-      httpStatus.INTERNAL_SERVER_ERROR,
-      'Database engine error'
-    );
+    return new AppError(httpStatus.INTERNAL_SERVER_ERROR, 'Database engine error');
   }
 
   if (error instanceof Prisma.PrismaClientInitializationError) {
-    return new AppError(
-      httpStatus.INTERNAL_SERVER_ERROR,
-      'Database connection error'
-    );
+    return new AppError(httpStatus.INTERNAL_SERVER_ERROR, 'Database connection error');
   }
 
   if (error instanceof Prisma.PrismaClientValidationError) {
@@ -80,8 +56,5 @@ export const prismaErrorMapper = (error: unknown): AppError => {
   }
 
   // If it's not a Prisma error, return a generic server error
-  return new AppError(
-    httpStatus.INTERNAL_SERVER_ERROR,
-    'Internal server error'
-  );
+  return new AppError(httpStatus.INTERNAL_SERVER_ERROR, 'Internal server error');
 };

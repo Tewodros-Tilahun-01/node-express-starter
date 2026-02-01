@@ -21,11 +21,7 @@ router.post(
  * @desc    Login with username/email and password
  * @access  Public
  */
-router.post(
-  '/login',
-  validateMiddleware.validate(authValidator.loginSchema),
-  authController.login
-);
+router.post('/login', validateMiddleware.validate(authValidator.loginSchema), authController.login);
 
 /**
  * @route   POST /api/v1/auth/refresh
@@ -46,11 +42,7 @@ router.post('/logout', authController.logout);
  * @desc    Logout from all devices (revoke all refresh tokens)
  * @access  Protected
  */
-router.post(
-  '/logout-all',
-  authMiddleware.authenticate,
-  authController.logoutAll
-);
+router.post('/logout-all', authMiddleware.authenticate, authController.logoutAll);
 
 /**
  * @route   GET /api/v1/auth/me

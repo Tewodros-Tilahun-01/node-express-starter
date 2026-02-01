@@ -5,11 +5,7 @@ import { ExtractJwt, Strategy as JwtStrategy } from 'passport-jwt';
 import { Strategy as LocalStrategy } from 'passport-local';
 import config from '@/config/config';
 import { prisma } from '@/config/prisma';
-import type {
-  PassportJwtDone,
-  PassportLocalDone,
-  TokenPayload,
-} from '@/types/auth.types';
+import type { PassportJwtDone, PassportLocalDone, TokenPayload } from '@/types/auth.types';
 import { AppError } from '@/utils/AppError';
 
 /**

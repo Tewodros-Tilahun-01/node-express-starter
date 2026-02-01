@@ -31,9 +31,7 @@ export const validate = (schemas: {
             field: err.path.join('.'),
             message: err.message,
           }));
-          throw AppError.badRequest(
-            `Validation error: ${errors.map((e) => e.message).join(', ')}`
-          );
+          throw AppError.badRequest(`Validation error: ${errors.map((e) => e.message).join(', ')}`);
         }
         req.validatedBody = result.data;
       }
@@ -85,9 +83,7 @@ export const validateSchema = <T>(schema: z.ZodSchema<T>, data: unknown): T => {
       field: err.path.join('.'),
       message: err.message,
     }));
-    throw AppError.badRequest(
-      `Validation error: ${errors.map((e) => e.message).join(', ')}`
-    );
+    throw AppError.badRequest(`Validation error: ${errors.map((e) => e.message).join(', ')}`);
   }
   return result.data;
 };

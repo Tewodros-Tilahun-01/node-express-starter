@@ -1,11 +1,7 @@
 import type { Request, Response } from 'express';
 import { userService } from '@/services';
 import { catchAsync } from '@/utils/catchAsync';
-import {
-  sendPaginatedResponse,
-  sendSuccess,
-  sendSuccessMessage,
-} from '@/utils/response';
+import { sendPaginatedResponse, sendSuccess, sendSuccessMessage } from '@/utils/response';
 import type { userValidator } from '@/validators';
 
 type CreateUserInput = userValidator.CreateUserInput;
@@ -20,12 +16,7 @@ export const getUsers = catchAsync(async (req: Request, res: Response) => {
   const query = req.validatedQuery as GetUsersQuery;
   const result = await userService.getUsers(query);
 
-  sendPaginatedResponse(
-    res,
-    result.users,
-    result.pagination,
-    'Users retrieved successfully'
-  );
+  sendPaginatedResponse(res, result.users, result.pagination, 'Users retrieved successfully');
 });
 
 /**

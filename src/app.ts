@@ -1,12 +1,7 @@
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
-import express, {
-  type Application,
-  type NextFunction,
-  type Request,
-  type Response,
-} from 'express';
+import express, { type Application, type NextFunction, type Request, type Response } from 'express';
 import helmet from 'helmet';
 import { errorHandler, successHandler } from '@/config/morgan';
 import passport from '@/config/passport';
